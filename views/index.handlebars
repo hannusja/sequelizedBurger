@@ -43,6 +43,7 @@
             $.ajax("/api/burgers/" + id, {
                 type: "PUT",
                 data: {
+                    id: id,
                     devoured: true
                 }
             }).then(
