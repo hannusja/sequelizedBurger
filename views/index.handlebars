@@ -1,0 +1,69 @@
+<h1>Burgers</h1>
+
+<h2>Burgers to try</h2>
+
+<ul>
+    {{#each burgers}}
+        {{#unless devoured}}
+            <li>
+                {{burger_name}}
+                <button class="change_devoured" data-id="{{id}}">
+                    Devour it!
+                </button>
+            </li>
+        {{/unless}}
+    {{/each}}
+</ul>
+
+<h2>Burgers eaten</h2>
+
+<ul>
+    {{#each burgers}}
+        {{#if devoured}}
+            <li>
+                {{burger_name}}
+            </li>
+        {{/if}}
+    {{/each}}
+</ul>
+
+<h2>Add a Burger</h2>
+<form id="create-form">
+    <div class="form-group">
+        <label for="burger_name">Burger Name:</label>
+        <input type="text" id="burger_name" name="burger_name">
+    </div>
+    <button type="submit">Add Burger</button>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $(".change_devoured").on("click", function(event) {
+            var id = $(this).data("id")
+            $.ajax("/api/burgers/" + id, {
+                type: "PUT",
+                data: {
+                    devoured: true
+                }
+            }).then(
+                function() {
+                    location.reload()
+                }
+            )
+        })
+
+        $("#create-form").on("submit", function(event) {
+            event.preventDefault()
+            var newBurger = {
+            burger_name: $("#burger_name").val().trim().toString()
+            }
+            $.ajax("/api/burgers", {
+            type: "POST",
+            data: newBurger
+            }).then(
+            function() {
+                location.reload()
+            })
+        })
+    })
+</script>
