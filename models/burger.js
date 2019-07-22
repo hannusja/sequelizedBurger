@@ -10,7 +10,15 @@ module.exports = function(sequelize, DataTypes) {
     devoured: { 
       type: DataTypes.BOOLEAN, 
       allowNull: false, 
-      defaultValue: false }
+      defaultValue: false 
+    }
   })
-  return Burger;
+  Burger.associate = function (models) {
+    models.Burger.belongsTo(models.Cook, {
+      foreignKey: {
+        allowNull: false
+      }
+    })
+  }
+  return Burger
 }

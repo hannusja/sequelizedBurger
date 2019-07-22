@@ -3,7 +3,11 @@ var db = require("../models")
 var router = express.Router()
 
 router.get("/", function(req, res) {
-  db.Burger.findAll({}).then(function(data) {
+  db.Burger.findAll({
+    include: [db.Cook],
+    order: [
+    ['burger_name', 'ASC']
+  ]}).then(function(data) {
     var hbsObject = {
       burgers: data
     }
@@ -14,6 +18,7 @@ router.get("/", function(req, res) {
 router.post("/api/burgers", function(req, res) {
   db.Burger.create({
     burger_name: req.body.burger_name,
+    CookId: req.body.CookId,
     devoured: false
   }).then(function(data) {
     res.json(data)
@@ -36,6 +41,22 @@ router.put("/api/burgers/:id", function(req, res) {
     } else {
       res.status(200).end()
     }
+  })
+})
+
+router.post("/api/cooks", function(req, res) {
+  db.Cook.findOrCreate({
+    where: {
+      cook_name: req.body.cook_name
+    },
+    defaults: {
+      cook_name: req.body.cook_name
+    }
+  }).then(function(data) {
+    res.json(data)
+  })
+  .catch(function(err) {
+    res.json(err)
   })
 })
 

@@ -6,7 +6,7 @@
     {{#each burgers}}
         {{#unless devoured}}
             <li>
-                {{burger_name}}
+                {{burger_name}} Cooked by: {{Cook.cook_name}}
                 <button class="change_devoured" data-id="{{id}}">
                     Devour it!
                 </button>
@@ -21,7 +21,7 @@
     {{#each burgers}}
         {{#if devoured}}
             <li>
-                {{burger_name}}
+            {{burger_name}} Cooked by: {{Cook.cook_name}}
             </li>
         {{/if}}
     {{/each}}
@@ -32,39 +32,59 @@
     <div class="form-group">
         <label for="burger_name">Burger Name:</label>
         <input type="text" id="burger_name" name="burger_name">
+        <label for="cook_name">Cooked by:</label>
+        <input type="text" id="cook_name" name="cook_name">
     </div>
     <button type="submit">Add Burger</button>
 </form>
 
 <script>
     $(document).ready(function() {
-        $(".change_devoured").on("click", function(event) {
-            var id = $(this).data("id")
-            $.ajax("/api/burgers/" + id, {
-                type: "PUT",
-                data: {
-                    id: id,
-                    devoured: true
-                }
-            }).then(
-                function() {
-                    location.reload()
-                }
-            )
-        })
-
-        $("#create-form").on("submit", function(event) {
-            event.preventDefault()
-            var newBurger = {
-            burger_name: $("#burger_name").val().trim().toString()
+    $(".change_devoured").on("click", function(event) {
+        var id = $(this).data("id")
+        $.ajax("/api/burgers/" + id, {
+            type: "PUT",
+            data: {
+                id: id,
+                devoured: true
             }
-            $.ajax("/api/burgers", {
-            type: "POST",
-            data: newBurger
-            }).then(
+        }).then(
             function() {
                 location.reload()
-            })
-        })
+            }
+        )
     })
+
+    function postCook (){
+        var cookedBy = {
+            cook_name: $("#cook_name").val().trim().toString()
+        }
+        $.ajax("/api/cooks", {
+            type: "POST",
+            data: cookedBy
+        }).then(function(res){
+            var CookId=res[0].id
+            postBurger(CookId)
+        })
+    }
+
+    function postBurger (CookId){
+        var newBurger = {
+            burger_name: $("#burger_name").val().trim().toString(),
+            CookId: CookId
+        }
+        $.ajax("/api/burgers", {
+        type: "POST",
+        data: newBurger
+        }).then(
+        function() {
+            location.reload()
+        })
+    }
+
+    $("#create-form").on("submit", function(event) {
+        event.preventDefault()
+        postCook()
+    })
+})
 </script>
