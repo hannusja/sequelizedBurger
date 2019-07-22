@@ -9,9 +9,9 @@ module.exports = function(sequelize, DataTypes) {
         }
     })
     Cook.associate = function(models) {
-        models.Cook.hasMany(models.Burger, {
-          onDelete: "CASCADE"
-        })
+      models.Cook.hasMany(models.Burger, {
+        onDelete: "CASCADE"
+      })
     }
     return Cook
 }

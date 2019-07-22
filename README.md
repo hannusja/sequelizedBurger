@@ -1,8 +1,8 @@
 UW-Extension Coding Boot Camp Week 15 Homework
 
-Purpose: work with MySQL, Node, Express, Handlebars, Sequelize; use MVC design pattern; Heroku deployment with databases.
+Purpose: Heavy play with Sequelize, also work with MySQL, Node, Express, Handlebars; use MVC design pattern; Heroku deployment with databases.
 
-How to use it: You can cook a burger. You can eat a burger.
+How to use it: You can cook a burger (as many as you wish). You can eat a burger (just one per person). There's no burger shortage in Wisconsin, just for the fun of playing with Sequelize models associations.
 
 Here is link to Heroku:
 

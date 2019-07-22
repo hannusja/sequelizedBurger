@@ -8,5 +8,12 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     })
+    Customer.associate = function(models) {
+        models.Customer.hasOne(models.Burger, {
+            foreignKey: {
+                allowNull: true
+            }
+        })
+    }
     return Customer
 }

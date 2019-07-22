@@ -7,9 +7,12 @@
         {{#unless devoured}}
             <li>
                 {{burger_name}} Cooked by: {{Cook.cook_name}}
+                <label for="customer_name">To be consumed by:</label>
+                <input type="text" id="customer_name" name="customer_name">
                 <button class="change_devoured" data-id="{{id}}">
                     Devour it!
                 </button>
+
             </li>
         {{/unless}}
     {{/each}}
@@ -21,7 +24,7 @@
     {{#each burgers}}
         {{#if devoured}}
             <li>
-            {{burger_name}} Cooked by: {{Cook.cook_name}}
+            {{burger_name}} Cooked by: {{Cook.cook_name}} Consumed by:{{Customer.customer_name}}
             </li>
         {{/if}}
     {{/each}}
@@ -37,54 +40,3 @@
     </div>
     <button type="submit">Add Burger</button>
 </form>
-
-<script>
-    $(document).ready(function() {
-    $(".change_devoured").on("click", function(event) {
-        var id = $(this).data("id")
-        $.ajax("/api/burgers/" + id, {
-            type: "PUT",
-            data: {
-                id: id,
-                devoured: true
-            }
-        }).then(
-            function() {
-                location.reload()
-            }
-        )
-    })
-
-    function postCook (){
-        var cookedBy = {
-            cook_name: $("#cook_name").val().trim().toString()
-        }
-        $.ajax("/api/cooks", {
-            type: "POST",
-            data: cookedBy
-        }).then(function(res){
-            var CookId=res[0].id
-            postBurger(CookId)
-        })
-    }
-
-    function postBurger (CookId){
-        var newBurger = {
-            burger_name: $("#burger_name").val().trim().toString(),
-            CookId: CookId
-        }
-        $.ajax("/api/burgers", {
-        type: "POST",
-        data: newBurger
-        }).then(
-        function() {
-            location.reload()
-        })
-    }
-
-    $("#create-form").on("submit", function(event) {
-        event.preventDefault()
-        postCook()
-    })
-})
-</script>
