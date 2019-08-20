@@ -11,13 +11,14 @@
                 {{#each burgers}}
                     {{#unless devoured}}
                         <li>
-                            {{burger_name}} Cooked by: {{Cook.cook_name}}
-                            <label for="customer_name">To be consumed by:</label>
-                            <input type="text" id="customer_name" name="customer_name">
-                            <button class="btn btn-warning change_devoured" data-id="{{id}}">
-                                Devour it!
-                            </button>
-
+                            <form class="change_devoured" data-id="{{id}}">
+                                {{burger_name}} Cooked by: {{Cook.cook_name}}
+                                <label for="customer_name">To be consumed by:</label>
+                                <input type="text" id="customer_name" name="customer_name">
+                                <button type="submit" class="btn btn-warning" >
+                                    Devour it!
+                                </button>
+                            </form>
                         </li>
                     {{/unless}}
                 {{/each}}

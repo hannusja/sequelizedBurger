@@ -1,10 +1,11 @@
 $(document).ready(function() {
+    var id
+    var customers_name
+    var eatenBy
+    var CustomerId
 
     function postCustomer (){
-        if($("#customer_name").val().match(/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
-            var eatenBy = {
-                customer_name: $("#customer_name").val().trim().toString()
-            }
+        if(customers_name.match(/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
             $.ajax("/api/customers", {
                 type: "POST",
                 data: eatenBy
@@ -13,18 +14,17 @@ $(document).ready(function() {
                     return alert("Don't be greedy! One free burger per person!")
                 }
                 else{
-                    var CustomerId=res[0].id
-                    eatBurger(CustomerId)
+                    CustomerId=res[0].id
+                    eatBurger()
                 }
             })
         }
-        else{
-            alert("Type your name!")
+        else {
+            return alert("Type your name!")
         }
     }
 
-    function eatBurger (CustomerId){
-        var id = $(".change_devoured").data("id")
+    function eatBurger (){
         $.ajax("/api/burgers/" + id, {
             type: "PUT",
             data: {
@@ -38,10 +38,6 @@ $(document).ready(function() {
             }
         )
     }
-
-    $(".change_devoured").on("click", function(event) {
-        postCustomer()
-    })
 
     function postCook (){
         if($("#cook_name").val().match(/^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$/)) {
@@ -84,4 +80,15 @@ $(document).ready(function() {
         event.preventDefault()
         postCook()
     })
+
+    $(".change_devoured").on("submit", function(event) {
+        event.preventDefault()
+        id = $(this).data("id")
+        customers_name=$(this).find("input").val().trim().toString()
+        eatenBy = {
+            customer_name: customers_name 
+        }
+        postCustomer()
+    })
+
 })
