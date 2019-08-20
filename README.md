@@ -9,7 +9,7 @@ How to use it:
 
 Here is link to Heroku:
 
-https://morning-coast-50483.herokuapp.com/
+https://boiling-crag-13283.herokuapp.com/
 
 If you wish to clone it and play with it locally:
 
